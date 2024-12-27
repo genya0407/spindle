@@ -12,9 +12,9 @@
 
 ActiveRecord::Schema[8.0].define(version: 2024_12_27_055709) do
   create_table "groups", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["name"], name: "index_groups_on_name"
+    t.index ["name"], name: "index_groups_on_name", unique: true
   end
 end
