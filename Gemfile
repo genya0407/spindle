@@ -32,8 +32,9 @@ group :development, :test do
 
   # Omakase Ruby styling [https://github.com/rails/rubocop-rails-omakase/]
   gem "rubocop-rails-omakase", require: false
-end
 
-group :test do
-  gem 'rspec-rails'
+  gem "factory_bot_rails"
+  gem "rspec-rails"
+  # see: https://github.com/amatsuda/database_rewinder/pull/93#issuecomment-2499581950
+  gem "database_rewinder", github: "kucho/database_rewinder", branch: "fix/rails-7-2-connection-warning"
 end
