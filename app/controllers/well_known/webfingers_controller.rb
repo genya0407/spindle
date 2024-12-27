@@ -1,7 +1,7 @@
 class WellKnown::WebfingersController < ApplicationController
   def show
     type, name, domain = params[:resource].split(/[:@]/)
-    return head 404 unless type == 'acct' && name.present? && domain == local_domain
+    return head 404 unless type == "acct" && name.present? && domain == local_domain
 
     group = Group.find_by!(name:)
     json = {
@@ -11,7 +11,7 @@ class WellKnown::WebfingersController < ApplicationController
           rel: "self",
           type: "application/activity+json",
           href: "https://#{local_domain}/users/#{group.name}"
-        },
+        }
         # TODO:
         # {
         #   "rel": "http://webfinger.net/rel/avatar",
@@ -20,6 +20,6 @@ class WellKnown::WebfingersController < ApplicationController
         # }
       ]
     }
-    render json: json, content_type: 'application/jrd+json'
+    render json: json, content_type: "application/jrd+json"
   end
 end
