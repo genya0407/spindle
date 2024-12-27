@@ -2,8 +2,8 @@
 # check=error=true
 
 # This Dockerfile is designed for production, not development. Use with Kamal or build'n'run by hand:
-# docker build -t spindle .
-# docker run -d -p 80:3000 -e RAILS_MASTER_KEY=<value from config/master.key> --name spindle spindle
+# docker build -t spindler .
+# docker run -d -p 80:3000 -e RAILS_MASTER_KEY=<value from config/master.key> --name spindler spindler
 
 # For a containerized dev environment, see Dev Containers: https://guides.rubyonrails.org/getting_started_with_devcontainer.html
 
