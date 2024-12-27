@@ -9,5 +9,9 @@ Rails.application.routes.draw do
     resource :webfinger, only: %i[show]
   end
 
-  resources :users, only: %i[show]
+  resources :users, only: %i[show] do
+    member do
+      post :inbox, to: "users/inbox#create"
+    end
+  end
 end
