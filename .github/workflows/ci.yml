@@ -6,7 +6,7 @@ on:
     branches: [ trunk ]
 
 jobs:
-  lint:
+  checks:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
