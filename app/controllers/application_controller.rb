@@ -6,4 +6,8 @@ class ApplicationController < ActionController::API
   def not_found
     head 404
   end
+
+  def local_domain
+    Rails.configuration.x.local_domain.presence
+  end
 end
