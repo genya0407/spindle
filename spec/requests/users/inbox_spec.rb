@@ -12,7 +12,7 @@ RSpec.describe "Users::Inboxes", type: :request do
     describe "Follow" do
       context 'when not followed yet' do
         it 'creates followership' do
-          post "/users/#{group.name}/inbox", headers: { 'Content-Type': 'application/json' }, params: { "type": "Follow" }.to_json
+          post "/users/#{group.name}/inbox", headers: { 'Content-Type': 'application/activity+json' }, params: { "type": "Follow" }.to_json
 
           expect(response.status).to eq 204
           expect(group.following_accounts.first).to eq(remote_account)
@@ -25,7 +25,7 @@ RSpec.describe "Users::Inboxes", type: :request do
         end
 
         it 'creates followership' do
-          post "/users/#{group.name}/inbox", headers: { 'Content-Type': 'application/json' }, params: { "type": "Follow" }.to_json
+          post "/users/#{group.name}/inbox", headers: { 'Content-Type': 'application/activity+json' }, params: { "type": "Follow" }.to_json
 
           expect(response.status).to eq 204
           expect(group.following_accounts.first).to eq(remote_account)
@@ -34,7 +34,7 @@ RSpec.describe "Users::Inboxes", type: :request do
 
       context 'when the group does not exist' do
         it 'returns 404' do
-          post "/users/hoge/inbox", headers: { 'Content-Type': 'application/json' }, params: { "type": "Follow" }.to_json
+          post "/users/hoge/inbox", headers: { 'Content-Type': 'application/activity+json' }, params: { "type": "Follow" }.to_json
 
           expect(response.status).to eq 404
         end
@@ -44,7 +44,7 @@ RSpec.describe "Users::Inboxes", type: :request do
     describe "Unfollow" do
       context 'when not followed yet' do
         it 'creates followership' do
-          post "/users/#{group.name}/inbox", headers: { 'Content-Type': 'application/json' }, params: { "type": "Undo", object: { type: "Follow" } }.to_json
+          post "/users/#{group.name}/inbox", headers: { 'Content-Type': 'application/activity+json' }, params: { "type": "Undo", object: { type: "Follow" } }.to_json
 
           expect(response.status).to eq 204
           expect(group.following_accounts.first).to eq(nil)
@@ -57,7 +57,7 @@ RSpec.describe "Users::Inboxes", type: :request do
         end
 
         it 'creates followership' do
-          post "/users/#{group.name}/inbox", headers: { 'Content-Type': 'application/json' }, params: { "type": "Undo", object: { type: "Follow" } }.to_json
+          post "/users/#{group.name}/inbox", headers: { 'Content-Type': 'application/activity+json' }, params: { "type": "Undo", object: { type: "Follow" } }.to_json
 
           expect(response.status).to eq 204
           expect(group.following_accounts.first).to eq(nil)
@@ -66,7 +66,7 @@ RSpec.describe "Users::Inboxes", type: :request do
 
       context 'when the group does not exist' do
         it 'returns 404' do
-          post "/users/hoge/inbox", headers: { 'Content-Type': 'application/json' }, params: { "type": "Undo", object: { type: "Follow" } }.to_json
+          post "/users/hoge/inbox", headers: { 'Content-Type': 'application/activity+json' }, params: { "type": "Undo", object: { type: "Follow" } }.to_json
 
           expect(response.status).to eq 404
         end
