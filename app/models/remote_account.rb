@@ -5,6 +5,8 @@ class RemoteAccount < ApplicationRecord
   validates :public_key, presence: true
   validates :inbox, presence: true
 
+  class AccountGone < StandardError; end
+
   def self.find_or_create_by_uri!(uri:)
     uri = uri.split("#").first
     if uri.start_with?("acct:")
@@ -19,9 +21,12 @@ class RemoteAccount < ApplicationRecord
     conn = Faraday.new do |faraday|
       faraday.request :json
       faraday.response :json, parser_options: { symbolize_names: true }
-      faraday.response :raise_error
     end
-    json = conn.get("https://#{domain}/.well-known/webfinger", resource: "acct:#{name}@#{domain}").body
+    response = conn.get("https://#{domain}/.well-known/webfinger", resource: "acct:#{name}@#{domain}")
+    raise AccountGone if response.status == 410 # account deleted already
+    raise "unexpected status code: #{response.status}, #{response.body.inspect}" unless response.success?
+
+    json = response.body
     create_by_uri!(uri: json[:links].find { |link| link[:rel] == "self" }[:href])
   end
 
@@ -29,10 +34,12 @@ class RemoteAccount < ApplicationRecord
     conn = Faraday.new do |faraday|
       faraday.request :json
       faraday.response :json, parser_options: { symbolize_names: true }
-      faraday.response :raise_error
       faraday.headers[:accept] = "application/activity+json, application/ld+json"
     end
-    json = conn.get(uri).body
+    response = conn.get(uri)
+    raise AccountGone if response.status == 410 # account deleted already
+    raise "unexpected status code: #{response.status}, #{response.body.inspect}" unless response.success?
+    json = response.body
 
     self.create_or_find_by!(
       uri: uri,

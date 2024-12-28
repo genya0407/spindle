@@ -10,6 +10,10 @@ RSpec.describe "Users::Inboxes", type: :request do
     end
 
     describe "Follow" do
+      before do
+        stub_request(:any, /test.com/)
+      end
+
       context 'when not followed yet' do
         it 'creates followership' do
           post "/users/#{group.name}/inbox", headers: { 'Content-Type': 'application/activity+json' }, params: { "type": "Follow" }.to_json

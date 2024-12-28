@@ -17,7 +17,6 @@ RSpec.describe "Users", type: :request do
             id: "https://test.com/users/group-1",
             type: "Group",
             inbox: "https://test.com/users/group-1/inbox",
-            outbox: "https://test.com/users/group-1/outbox",
           )
         )
       end

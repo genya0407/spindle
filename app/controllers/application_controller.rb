@@ -1,5 +1,6 @@
 class ApplicationController < ActionController::API
   rescue_from ActiveRecord::RecordNotFound, with: :not_found
+  rescue_from RemoteAccount::AccountGone, with: :unauthorized
 
   include SignatureVerification
 
@@ -7,6 +8,10 @@ class ApplicationController < ActionController::API
 
   def not_found
     head 404
+  end
+
+  def unauthorized
+    head 401
   end
 
   def local_domain

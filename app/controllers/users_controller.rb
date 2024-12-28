@@ -8,15 +8,15 @@ class UsersController < ApplicationController
       inbox: "https://#{local_domain}/users/#{group.name}/inbox",
       preferredUsername: group.name,
       name: group.name,
-      # TODO:
       summary: "...snip...",
-      published: group.created_at.iso8601
+      published: group.created_at.iso8601,
+      publicKey: {
+        id: "https://#{local_domain}/users/#{group.name}#main-key",
+        owner: "https://#{local_domain}/users/#{group.name}",
+        publicKeyPem: group.public_key
+      }
+      # TODO:
       # outbox: "https://#{local_domain}/users/#{group.name}/outbox",
-      # publicKey: {
-      #   id: "https://#{local_domain}/users/#{group.name}#main-key",
-      #   owner: "https://#{local_domain}/users/#{group.name}",
-      #   publicKeyPem: "...snip..."
-      # },
       # endpoints: {sharedInbox: "https://#{local_domain}/inbox"},
     }
     render json: account, content_type: "application/activity+json"
