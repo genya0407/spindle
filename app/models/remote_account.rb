@@ -31,7 +31,6 @@ class RemoteAccount < ApplicationRecord
       faraday.headers[:accept] = "application/activity+json, application/ld+json"
     end
     json = conn.get(uri).body
-    puts JSON.pretty_generate(json)
 
     self.create_or_find_by!(
       uri: uri,
