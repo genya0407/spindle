@@ -6,12 +6,12 @@ class UsersController < ApplicationController
       id: "https://#{local_domain}/users/#{group.name}",
       type: "Group",
       inbox: "https://#{local_domain}/users/#{group.name}/inbox",
-      outbox: "https://#{local_domain}/users/#{group.name}/outbox",
       preferredUsername: group.name,
       name: group.name,
       # TODO:
       summary: "...snip...",
       published: group.created_at.iso8601
+      # outbox: "https://#{local_domain}/users/#{group.name}/outbox",
       # publicKey: {
       #   id: "https://#{local_domain}/users/#{group.name}#main-key",
       #   owner: "https://#{local_domain}/users/#{group.name}",
