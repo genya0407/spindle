@@ -10,7 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_27_155858) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_28_044335) do
+  create_table "followerships", force: :cascade do |t|
+    t.integer "group_id"
+    t.integer "remote_account_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["group_id", "remote_account_id"], name: "index_followerships_on_group_id_and_remote_account_id", unique: true
+    t.index ["group_id"], name: "index_followerships_on_group_id"
+    t.index ["remote_account_id"], name: "index_followerships_on_remote_account_id"
+  end
+
   create_table "groups", force: :cascade do |t|
     t.string "name", null: false
     t.datetime "created_at", null: false
