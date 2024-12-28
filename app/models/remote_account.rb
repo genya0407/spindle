@@ -4,16 +4,16 @@ class RemoteAccount < ApplicationRecord
   validates :domain, presence: true
   validates :public_key, presence: true
 
-  def self.find_or_create_by_uri(uri:)
+  def self.find_or_create_by_uri!(uri:)
      if uri.start_with?("acct:")
       name, domain = uri.delete_prefix("acct:").delete_prefix("@").split("@")
-      self.find_by(name: name, domain: domain) || create_by_name_and_domain(name: name, domain: domain)
+      self.find_by(name: name, domain: domain) || create_by_name_and_domain!(name: name, domain: domain)
      else
-      self.find_by(uri: uri.split("#").first) || create_by_uri(uri: uri)
+      self.find_by(uri: uri.split("#").first) || create_by_uri!(uri: uri)
      end
   end
 
-  def self.create_by_name_and_domain(name:, domain:)
+  def self.create_by_name_and_domain!(name:, domain:)
     conn = Faraday.new do |faraday|
       faraday.request :json
       faraday.response :json, parser_options: { symbolize_names: true }
@@ -23,7 +23,7 @@ class RemoteAccount < ApplicationRecord
     create_by_uri(uri: json[:links].find { |link| link[:rel] == "self" }[:href])
   end
 
-  def self.create_by_uri(uri:)
+  def self.create_by_uri!(uri:)
     conn = Faraday.new do |faraday|
       faraday.request :json
       faraday.response :json, parser_options: { symbolize_names: true }
@@ -38,5 +38,20 @@ class RemoteAccount < ApplicationRecord
       domain: URI.parse(uri).host,
       public_key: json.dig(:publicKey, :publicKeyPem),
     )
+  end
+
+  def update_key!
+    conn = Faraday.new do |faraday|
+      faraday.request :json
+      faraday.response :json, parser_options: { symbolize_names: true }
+      faraday.response :raise_error
+      faraday.headers[:accept] = "application/activity+json, application/ld+json"
+    end
+    json = conn.get(uri).body
+    self.update!(public_key: json.dig(:publicKey, :publicKeyPem))
+  end
+
+  def acct
+    "acct:#{name}@#{domain}"
   end
 end

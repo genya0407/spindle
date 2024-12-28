@@ -36,6 +36,8 @@ RSpec.configure do |config|
   # Filter lines from Rails gems in backtraces.
   config.filter_rails_from_backtrace!
 
+  config.include ActiveSupport::Testing::TimeHelpers
+
   config.before :suite do
     DatabaseRewinder['primary']
     DatabaseRewinder['cache']
@@ -45,6 +47,7 @@ RSpec.configure do |config|
 
   config.before do
     allow(Rails.configuration.x).to receive(:local_domain).and_return('test.com')
+    WebMock.disable_net_connect!(allow_localhost: true)
   end
 
   config.after do

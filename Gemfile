@@ -40,4 +40,5 @@ group :development, :test do
   gem "rspec-rails"
   # see: https://github.com/amatsuda/database_rewinder/pull/93#issuecomment-2499581950
   gem "database_rewinder", github: "kucho/database_rewinder", branch: "fix/rails-7-2-connection-warning"
+  gem "webmock"
 end
