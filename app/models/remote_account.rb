@@ -3,6 +3,7 @@ class RemoteAccount < ApplicationRecord
   validates :name, presence: true, uniqueness: { scope: :domain }, format: { with: /[a-z0-9_]+([.-]+[a-z0-9_]+)*/i }
   validates :domain, presence: true
   validates :public_key, presence: true
+  validates :inbox, presence: true
 
   def self.find_or_create_by_uri!(uri:)
     uri = uri.split("#").first
@@ -21,7 +22,7 @@ class RemoteAccount < ApplicationRecord
       faraday.response :raise_error
     end
     json = conn.get("https://#{domain}/.well-known/webfinger", resource: "acct:#{name}@#{domain}").body
-    create_by_uri(uri: json[:links].find { |link| link[:rel] == "self" }[:href])
+    create_by_uri!(uri: json[:links].find { |link| link[:rel] == "self" }[:href])
   end
 
   def self.create_by_uri!(uri:)
@@ -38,6 +39,7 @@ class RemoteAccount < ApplicationRecord
       name: json[:name],
       domain: URI.parse(uri).host,
       public_key: json.dig(:publicKey, :publicKeyPem),
+      inbox: json[:inbox]
     )
   end
 

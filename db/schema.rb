@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_28_044335) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_28_075922) do
   create_table "followerships", force: :cascade do |t|
     t.integer "group_id"
     t.integer "remote_account_id"
@@ -35,6 +35,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_28_044335) do
     t.string "public_key", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "inbox", null: false
     t.index ["domain", "name"], name: "index_remote_accounts_on_domain_and_name", unique: true
     t.index ["uri"], name: "index_remote_accounts_on_uri", unique: true
   end
