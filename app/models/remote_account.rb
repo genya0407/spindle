@@ -5,12 +5,13 @@ class RemoteAccount < ApplicationRecord
   validates :public_key, presence: true
 
   def self.find_or_create_by_uri!(uri:)
-     if uri.start_with?("acct:")
+    uri = uri.split("#").first
+    if uri.start_with?("acct:")
       name, domain = uri.delete_prefix("acct:").delete_prefix("@").split("@")
       self.find_by(name: name, domain: domain) || create_by_name_and_domain!(name: name, domain: domain)
-     else
-      self.find_by(uri: uri.split("#").first) || create_by_uri!(uri: uri)
-     end
+    else
+      self.find_by(uri: uri) || create_by_uri!(uri: uri)
+    end
   end
 
   def self.create_by_name_and_domain!(name:, domain:)
