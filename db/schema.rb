@@ -10,7 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_28_094439) do
+ActiveRecord::Schema[8.0].define(version: 2024_12_28_154336) do
+  create_table "boosts", force: :cascade do |t|
+    t.integer "group_id"
+    t.integer "author_id"
+    t.text "original_status_uri", null: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["author_id"], name: "index_boosts_on_author_id"
+    t.index ["group_id", "original_status_uri"], name: "index_boosts_on_group_id_and_original_status_uri", unique: true
+    t.index ["group_id"], name: "index_boosts_on_group_id"
+  end
+
   create_table "followerships", force: :cascade do |t|
     t.integer "group_id"
     t.integer "remote_account_id"
@@ -24,6 +35,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_28_094439) do
     t.text "original_status_uri", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["group_id", "original_status_uri"], name: "index_forwards_on_group_id_and_original_status_uri", unique: true
     t.index ["group_id"], name: "index_forwards_on_group_id"
   end
 

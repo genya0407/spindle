@@ -17,6 +17,16 @@ class Users::InboxController < ApplicationController
       )
     in { type: "Undo", object: { type: "Follow" } }
       target_group.followerships.find_by(remote_account: signed_request_actor)&.destroy!
+    in { type: "Create", to:, object: { type: "Note", id:, tag: { type: "Mention", href: } } }
+      if (Array(to) & [ "Public", "as:Public", "https://www.w3.org/ns/activitystreams#Public" ]).present? && href == target_group.uri
+        if json[:object][:inReplyTo]
+          forward = target_group.forwards.create_or_find_by!(original_status_uri: id)
+          UndercurrentJob.deliver_to_followers(group: target_group, forward_id: forward.id)
+        else
+          boost = target_group.boosts.create_or_find_by!(original_status_uri: id)
+          OvercurrentJob.deliver_to_followers(group: target_group, boost_id: boost.id)
+        end
+      end
     else
       Rails.logger.info { "Unsupported type: #{params[:type].inspect}. #{params.to_json}" }
     end
