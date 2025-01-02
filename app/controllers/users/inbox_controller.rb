@@ -13,7 +13,7 @@ class Users::InboxController < ApplicationController
       SignedRequestJob.perform_later(
         verb: :post, url: signed_request_actor.inbox,
         body: LinkedDataSignature
-                .new("@context": "https://www.w3.org/ns/activitystreams", type: "Accept", object: json)
+                .new("@context": "https://www.w3.org/ns/activitystreams", type: "Accept", actor: target_group.uri, object: json)
                 .sign!(target_group)
                 .to_json,
         group_id: target_group.id

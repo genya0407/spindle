@@ -15,8 +15,7 @@ class LinkedDataSignature
 
     return unless type == 'RsaSignature2017'
 
-    creator = ActivityPub::TagManager.instance.uri_to_actor(creator_uri)
-    creator = ActivityPub::FetchRemoteKeyService.new.call(creator_uri) if creator&.public_key.blank?
+    creator = RemoteAccount.find_or_create_by_uri!(uri: creator_uri)
 
     return if creator.nil?
 
@@ -32,7 +31,7 @@ class LinkedDataSignature
   def sign!(creator, sign_with: nil)
     options = {
       'type' => 'RsaSignature2017',
-      'creator' => creator.uri,
+      'creator' => "#{creator.uri}#main-key",
       'created' => Time.now.utc.iso8601,
     }
 
@@ -45,7 +44,7 @@ class LinkedDataSignature
 
     # Mastodon's context is either an array or a single URL
     context_with_security = Array(@json['@context'])
-    context_with_security << 'https://w3id.org/security/v1'
+    context_with_security << SIGNATURE_CONTEXT
     context_with_security.uniq!
     context_with_security = context_with_security.first if context_with_security.size == 1
 

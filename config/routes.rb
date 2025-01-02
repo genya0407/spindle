@@ -13,7 +13,10 @@ Rails.application.routes.draw do
 
   resources :users, only: %i[show] do
     member do
+      get :followers
+      get :following
       post :inbox, to: "users/inbox#create"
+      post :outbox, to: "users/outbox#create"
     end
   end
 end

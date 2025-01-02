@@ -18,6 +18,7 @@ class Group < ApplicationRecord
   def uri = "https://#{Rails.configuration.x.local_domain}/users/#{name}"
   def inbox_uri = "#{uri}/inbox"
   def followers_uri = "#{uri}/followers"
+  def following_uri = "#{uri}/following"
 
   def keypair
     @keypair ||= OpenSSL::PKey::RSA.new(private_key)
