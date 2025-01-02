@@ -62,21 +62,4 @@ class LinkedDataSignature
     graph = RDF::Graph.new << JSON::LD::API.toRdf(json)
     graph.dump(:normalize)
   end
-
-  def load_jsonld_context(url, _options = {}, &block)
-    json = Rails.cache.fetch("jsonld:context:#{url}", expires_in: 30.days, raw: true) do
-      res = Faraday.new.get(url) do |faraday|
-        faraday.headers["Accept"] = "application/ld+json"
-      end
-      raise JSON::LD::JsonLdError::LoadingDocumentFailed unless res.status == 200 && res.mime_type == 'application/ld+json'
-      request.perform do |res|
-
-        res.body_with_limit
-      end
-    end
-
-    doc = JSON::LD::API::RemoteDocument.new(json, documentUrl: url)
-
-    block ? yield(doc) : doc
-  end
 end
