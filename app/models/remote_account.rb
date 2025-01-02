@@ -43,7 +43,7 @@ class RemoteAccount < ApplicationRecord
 
     self.create_or_find_by!(
       uri: uri,
-      name: json[:name],
+      name: json[:preferredUsername] || json[:name],
       domain: URI.parse(uri).host,
       public_key: json.dig(:publicKey, :publicKeyPem),
       inbox: json[:inbox]
