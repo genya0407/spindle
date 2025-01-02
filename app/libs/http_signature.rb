@@ -1,4 +1,4 @@
-class Signature
+class HttpSignature
   REQUEST_TARGET = "(request-target)".to_sym
 
   def initialize(verb:, url:, body:, actor:)

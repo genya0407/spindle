@@ -28,6 +28,8 @@ gem "kamal", require: false
 
 gem "faraday"
 gem "faraday_middleware"
+gem "json-ld"
+gem "json-ld-preloaded"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem
