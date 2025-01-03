@@ -11,14 +11,11 @@ RSpec.describe "Users", type: :request do
         get '/users/group-1'
 
         expect(response.status).to eq 200
-        expect(JSON.parse(response.body, symbolize_names: true)).to(
-          include(
-            "@context": [ "https://www.w3.org/ns/activitystreams" ],
-            id: "https://test.com/users/group-1",
-            type: "Group",
-            inbox: "https://test.com/users/group-1/inbox",
-          )
-        )
+        json = JSON.parse(response.body, symbolize_names: true)
+        expect(json[:"@context"]).to eq [ "https://www.w3.org/ns/activitystreams", "https://w3id.org/security/v1" ]
+        expect(json[:id]).to eq "https://www.example.com/users/group-1"
+        expect(json[:type]).to eq "Group"
+        expect(json[:inbox]).to eq "https://www.example.com/users/group-1/inbox"
       end
 
       it 'returns 404 for incorrect query' do

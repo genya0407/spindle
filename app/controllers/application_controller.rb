@@ -6,6 +6,10 @@ class ApplicationController < ActionController::API
 
   private
 
+  def default_url_options(options={})
+    { :protocol => "https" }
+  end
+
   def not_found
     head 404
   end

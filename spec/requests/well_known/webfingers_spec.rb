@@ -8,17 +8,17 @@ RSpec.describe "WellKnown::Webfingers", type: :request do
       end
 
       it 'returns successful response for correct query' do
-        get '/.well-known/webfinger', params: { resource: "acct:group-1@test.com" }
+        get '/.well-known/webfinger', params: { resource: "acct:group-1@www.example.com" }
 
         expect(response.status).to eq 200
         expect(JSON.parse(response.body, symbolize_names: true)).to(
           include(
-            subject: "acct:group-1@test.com",
+            subject: "acct:group-1@www.example.com",
             links: [
               {
                 rel: "self",
                 type: "application/activity+json",
-                href: "https://test.com/users/group-1"
+                href: "https://www.example.com/users/group-1"
               }
             ]
           )
@@ -26,7 +26,7 @@ RSpec.describe "WellKnown::Webfingers", type: :request do
       end
 
       it 'returns 404 for incorrect query' do
-        get '/.well-known/webfinger', params: { resource: "acct:group-2@test.com" }
+        get '/.well-known/webfinger', params: { resource: "acct:group-2@www.example.com" }
 
         expect(response.status).to eq 404
       end

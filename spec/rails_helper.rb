@@ -46,7 +46,7 @@ RSpec.configure do |config|
   end
 
   config.before do
-    allow(Rails.configuration.x).to receive(:local_domain).and_return('test.com')
+    allow(Rails.configuration.x).to receive(:local_domain).and_return('www.example.com')
     WebMock.disable_net_connect!(allow_localhost: true)
   end
 
