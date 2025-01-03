@@ -16,7 +16,7 @@ Rails.application.routes.draw do
       get :followers
       get :following
       post :inbox, to: "users/inbox#create"
-      post :outbox, to: "users/outbox#create"
+      get :outbox, to: "users/outbox#create"
     end
   end
 end

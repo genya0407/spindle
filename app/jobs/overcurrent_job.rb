@@ -15,7 +15,7 @@ class OvercurrentJob < ApplicationJob
       body: {
         "@context": "https://www.w3.org/ns/activitystreams",
         id: boost.uri,
-        to: "Public",
+        to: "https://www.w3.org/ns/activitystreams#Public",
         cc: [ boost.actor.followers_uri ],
         type: "Announce",
         actor: boost.actor.uri,
