@@ -32,6 +32,8 @@ class HttpSignature
     {
       Date: date,
       Digest: digest,
+      Host: URI.parse(@url).host,
+      'Content-Type': "application/activity+json",
       REQUEST_TARGET => request_target
     }
   end

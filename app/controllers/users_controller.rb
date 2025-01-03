@@ -14,7 +14,11 @@ class UsersController < ApplicationController
       following: following_user_url(id: target_group.name),
       name: target_group.name,
       preferredUsername: target_group.name,
-      summary: "...snip...",
+      summary: target_group.summary,
+      icon: {
+        type: "Image",
+        url: "https://#{local_domain}/spindler.png",
+      },
       published: target_group.created_at.iso8601,
       publicKey: {
         id: "https://#{local_domain}/users/#{target_group.name}#main-key",

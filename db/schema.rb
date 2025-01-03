@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_01_01_040835) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_03_025407) do
   create_table "boosts", force: :cascade do |t|
     t.integer "group_id"
     t.text "original_status_uri", null: false
@@ -44,6 +44,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_01_01_040835) do
     t.datetime "updated_at", null: false
     t.text "private_key", null: false
     t.text "public_key", null: false
+    t.text "summary", null: false
     t.index ["name"], name: "index_groups_on_name", unique: true
   end
 

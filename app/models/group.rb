@@ -1,5 +1,6 @@
 class Group < ApplicationRecord
   validates :name, presence: true, uniqueness: true
+  validates :summary, presence: true
   validates :private_key, presence: true
   validates :public_key, presence: true
 

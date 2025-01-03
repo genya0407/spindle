@@ -9,7 +9,6 @@ class SignedRequestJob < ApplicationJob
       faraday.response :raise_error
     end
     conn.public_send(verb, url) do |faraday|
-      faraday.headers["Content-Type"] = "application/activity+json"
       faraday.body = body
       signature = HttpSignature.new(verb: verb, url: url, body: body, actor: actor)
       signature.headers.each do |key, value|
