@@ -21,8 +21,8 @@ class Users::InboxController < ApplicationController
     in { type: "Undo", object: { type: "Follow" } }
       target_group.followerships.find_by(remote_account: signed_request_actor)&.destroy!
     in { type: "Create", to:, object: { type: "Note", id:, tag: } }
-      mention_hrefs = [tag].flatten.select { |t| t[:type] = "Mention" }.map { |tag| tag[:href] }
-      if mention_hrefs.include?(target_group.uri) && ([to].flatten & [ "Public", "as:Public", "https://www.w3.org/ns/activitystreams#Public" ]).present?
+      mention_hrefs = [ tag ].flatten.select { |t| t[:type] = "Mention" }.map { |tag| tag[:href] }
+      if mention_hrefs.include?(target_group.uri) && ([ to ].flatten & [ "Public", "as:Public", "https://www.w3.org/ns/activitystreams#Public" ]).present?
         if json[:object][:inReplyTo]
           forward = target_group.forwards.create_or_find_by!(original_status_uri: id) { it.json = json }
           UndercurrentJob.deliver_to_followers(group: target_group, forward_id: forward.id)

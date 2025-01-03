@@ -30,7 +30,7 @@ gem "faraday"
 gem "faraday_middleware"
 gem "json-ld"
 gem "json-ld-preloaded"
-gem 'rdf-normalize'
+gem "rdf-normalize"
 
 group :development, :test do
   # See https://guides.rubyonrails.org/debugging_rails_applications.html#debugging-with-the-debug-gem

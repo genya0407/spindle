@@ -1,8 +1,9 @@
 # copied from mastodon
 
 # frozen_string_literal: true
+
 # This file generated automatically from http://w3id.org/identity/v1
-require 'json/ld'
+require "json/ld"
 class JSON::LD::Context
   add_preloaded("http://w3id.org/identity/v1") do
     new(term_definitions: {

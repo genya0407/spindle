@@ -17,7 +17,7 @@ class UsersController < ApplicationController
       summary: target_group.summary,
       icon: {
         type: "Image",
-        url: "https://#{local_domain}/spindler.png",
+        url: "https://#{local_domain}/spindler.png"
       },
       published: target_group.created_at.iso8601,
       publicKey: {
@@ -31,11 +31,9 @@ class UsersController < ApplicationController
   end
 
   def following
-
   end
 
   def followers
-
   end
 
   private
