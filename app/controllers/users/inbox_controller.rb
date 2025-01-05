@@ -31,6 +31,15 @@ class Users::InboxController < ApplicationController
           OvercurrentJob.deliver_to_followers(group: target_group, boost_id: boost.id)
         end
       end
+    in { type: "Update", to:, object: { type: "Note", id: } }
+      if ([ to ].flatten & [ "Public", "as:Public", "https://www.w3.org/ns/activitystreams#Public" ]).present?
+        forward = target_group.forwards.find_by(original_status_uri: id)
+        if forward
+          forward.json = json
+          forward.save!
+          UndercurrentJob.deliver_to_followers(group: target_group, forward_id: forward.id)
+        end
+      end
     else
       Rails.logger.info { "Unsupported type: #{params[:type].inspect}. #{params.to_json}" }
     end
